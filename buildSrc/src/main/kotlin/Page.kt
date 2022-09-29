@@ -6,6 +6,7 @@ class Page(
     val source: String,
     val entities: List<Entity>
 ) {
+    @Suppress("NOTHING_TO_INLINE")
     inline fun Entity.extract(): String = this@extract.extract(this@Page.source)
 
     fun htmlOnlyString(): String {

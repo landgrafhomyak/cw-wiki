@@ -1,3 +1,6 @@
+import io.github.landgrafhomyak.chatwars.wiki.html_compiler.GradleTask as JspCompile
+
+
 plugins {
     kotlin("multiplatform") version "1.7.0"
 }
@@ -7,6 +10,18 @@ version = "0"
 
 repositories {
     mavenCentral()
+}
+
+val jspKotlinDir = buildDir.resolve("jsp")
+
+val jspCompile = tasks.create<JspCompile>("jspCompile") {
+    destDir(jspKotlinDir)
+    val sourceRoot = rootDir.resolve("src").resolve("commonMain").resolve("html")
+    jsp("io.github.landgrafhomyak.chatwars.wiki.templates", "Root", sourceRoot.resolve("root.jsp"))
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
+    dependsOn(jspCompile)
 }
 
 kotlin {
@@ -32,6 +47,7 @@ kotlin {
                 implementation(kotlin("stdlib"))
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.0")
             }
+            this.kotlin.srcDir(jspKotlinDir)
         }
         val commonTest by getting {
             dependencies {

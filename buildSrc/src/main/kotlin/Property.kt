@@ -14,6 +14,7 @@ class Property(val name: String, val type: Type) {
 
     inline val gravedName: String
         get() {
+            @Suppress("LiftReturnOrAssignment")
             if (this.name.startsWith("`"))
                 return this.name
             else

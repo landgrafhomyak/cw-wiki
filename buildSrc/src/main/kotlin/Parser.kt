@@ -5,7 +5,6 @@ package io.github.landgrafhomyak.chatwars.wiki.html_compiler
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmStatic
 
-
 object Parser {
     internal val injectionStartPattern = Regex("<%([=@!]?)")
     internal val injectionEndPattern = Regex("%>")
@@ -22,7 +21,7 @@ object Parser {
         while (pos < source.length) {
             val startMatch = injectionStartPattern.find(source, pos) ?: break
             if (startMatch.range.start > pos)
-                entities.add(Entity.Plain(pos.toUInt(), (startMatch.range.start - pos).toUInt()))
+                entities.add(Entity.Plain(pos, startMatch.range.start - pos))
 
             val injectionStart = startMatch.range.endInclusive + 1
             val endMatch = injectionEndPattern.find(source, injectionStart) ?: throw UnclosedInjection()
@@ -30,10 +29,10 @@ object Parser {
 
             when (startMatch.groupValues[1]) {
                 ""  -> {
-                    entities.add(Entity.KotlinBlockInjection(injectionStart.toUInt(), (injectionEnd - injectionStart).toUInt()))
+                    entities.add(Entity.KotlinBlockInjection(injectionStart, injectionEnd - injectionStart))
                 }
                 "=" -> {
-                    entities.add(Entity.KotlinInlineInjection(injectionStart.toUInt(), (injectionEnd - injectionStart).toUInt()))
+                    entities.add(Entity.KotlinInlineInjection(injectionStart, injectionEnd - injectionStart))
                 }
                 "@" -> {
                     for (e in entities) {
@@ -67,7 +66,7 @@ object Parser {
             pos = endMatch.range.last + 1
         }
         if (pos < source.length) {
-            entities.add(Entity.Plain(pos.toUInt(), ((source.length - pos).toUInt())))
+            entities.add(Entity.Plain(pos, source.length - pos))
         }
         return Page(
             imports = imports,

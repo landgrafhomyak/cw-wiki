@@ -22,18 +22,18 @@ object Generator {
 
         builder.append("    public companion object {\n")
         builder.append("        @kotlin.jvm.JvmStatic\n")
-        builder.append("        public fun format(params: $name): String = this(\n")
+        builder.append("        public fun format(params: $name): String = this.format(\n")
         for (property in page.properties) {
             builder.append("            ${property.name} = params.${property.name},\n")
         }
         builder.append("        )\n\n")
-        builder.append("        @kotlin.jvm.JvmStatic")
+        builder.append("        @kotlin.jvm.JvmStatic\n")
         builder.append("        public fun format(params: ${name}.() -> Unit): String {\n")
         builder.append("            val _params = ${name}()\n")
         builder.append("            params(_params)\n")
-        builder.append("            return this(_params)\n")
-        builder.append("        )\n\n")
-        builder.append("        @kotlin.jvm.JvmStatic")
+        builder.append("            return this.format(_params)\n")
+        builder.append("        }\n\n")
+        builder.append("        @kotlin.jvm.JvmStatic\n")
         builder.append("        public fun format(\n")
         for (property in page.properties) {
             builder.append("            ${property.name}: ${property.type.compile()},\n")
