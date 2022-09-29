@@ -1,4 +1,4 @@
-package io.github.landgrafhomyak.chatwars.wiki.html_compiler
+package io.github.landgrafhomyak.chatwars.wiki.preprocessors.html
 
 import kotlin.jvm.JvmStatic
 
@@ -38,7 +38,7 @@ object Generator {
         for (property in page.properties) {
             builder.append("            ${property.name}: ${property.type.compile()},\n")
         }
-        builder.append("        ) = \n\"\"\"")
+        builder.append("        ): String = \n\"\"\"")
         for (e in page.entities) {
             when (e) {
                 is Entity.Plain                 -> builder.append(e.extract(page.source).replace("$", "\\$"))

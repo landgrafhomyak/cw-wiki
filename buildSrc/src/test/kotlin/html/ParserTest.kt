@@ -1,7 +1,14 @@
-package io.github.landgrafhomyak.chatwars.wiki.html_compiler
+package io.github.landgrafhomyak.chatwars.wiki.preprocessors.html
 
+import io.github.landgrafhomyak.chatwars.wiki.preprocessors.html.Entity
+import io.github.landgrafhomyak.chatwars.wiki.preprocessors.html.Import
+import io.github.landgrafhomyak.chatwars.wiki.preprocessors.html.ImportNotOnTop
+import io.github.landgrafhomyak.chatwars.wiki.preprocessors.html.Parser
+import io.github.landgrafhomyak.chatwars.wiki.preprocessors.html.Property
+import io.github.landgrafhomyak.chatwars.wiki.preprocessors.html.PropertyNotOnTop
+import io.github.landgrafhomyak.chatwars.wiki.preprocessors.html.Type
+import io.github.landgrafhomyak.chatwars.wiki.preprocessors.html.UnclosedInjection
 import kotlin.test.Test
-import kotlin.test.assertContentEquals
 import kotlin.test.assertFailsWith
 
 internal class ParserTest {

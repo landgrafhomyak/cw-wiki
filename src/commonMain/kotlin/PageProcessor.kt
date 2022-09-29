@@ -1,12 +1,14 @@
 package io.github.landgrafhomyak.chatwars.wiki
 
 import io.github.landgrafhomyak.chatwars.wiki.templates.Root
+import kotlin.jvm.JvmStatic
 
-class PageProcessor(private val resources: ResourcesProvider) {
+object PageProcessor {
+    @JvmStatic
     fun process(path: String, resp: HttpResponseBuilder) {
         when (path) {
             "/"           -> resp.answer(200, Root.format("Main page"))
-            "/common.css" -> resp.answer(200, this.resources.get("/common.css"))
+            "/common.css" -> resp.answer(200, Resources.cssCommon)
         }
     }
 }

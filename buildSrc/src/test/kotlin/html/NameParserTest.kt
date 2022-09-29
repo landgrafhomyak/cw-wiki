@@ -1,5 +1,7 @@
-package io.github.landgrafhomyak.chatwars.wiki.html_compiler
+package io.github.landgrafhomyak.chatwars.wiki.preprocessors.html
 
+import io.github.landgrafhomyak.chatwars.wiki.preprocessors.html.InvalidName
+import io.github.landgrafhomyak.chatwars.wiki.preprocessors.html.Parser
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 

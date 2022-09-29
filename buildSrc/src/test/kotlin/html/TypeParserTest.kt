@@ -1,5 +1,6 @@
-package io.github.landgrafhomyak.chatwars.wiki.html_compiler
+package io.github.landgrafhomyak.chatwars.wiki.preprocessors.html
 
+import io.github.landgrafhomyak.chatwars.wiki.preprocessors.html.Type
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails

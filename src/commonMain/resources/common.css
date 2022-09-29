@@ -73,11 +73,20 @@ body > div.header > div.tabs > div.tab {
     border-image: linear-gradient(to top, #009fd9, #e9f9ff) 1;
     padding: 5px 10px;
     background-image: linear-gradient(to top, #d7f0fc, #e9f9ff);
+    white-space: nowrap;
 }
 
 body > div.header > div.tabs > div.tab.selected {
     border-bottom: none;
     background-image: linear-gradient(to top, white, #e9f9ff);
+}
+
+body > div.header > div.tabs > div.tab.join-left {
+    border-left: none;
+}
+
+body > div.header > div.tabs > div.tab.join-right {
+    border-right: none;
 }
 
 body > div.header > div.tabs > div.tab a, body > div.header > div.tabs > div.tab a:visited {

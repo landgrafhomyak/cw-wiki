@@ -1,6 +1,6 @@
 @file:JvmName("Parser")
 
-package io.github.landgrafhomyak.chatwars.wiki.html_compiler
+package io.github.landgrafhomyak.chatwars.wiki.preprocessors.html
 
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmStatic

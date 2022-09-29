@@ -1,4 +1,4 @@
-package io.github.landgrafhomyak.chatwars.wiki.html_compiler
+package io.github.landgrafhomyak.chatwars.wiki.preprocessors.html
 
 @Suppress("EqualsOrHashCode")
 sealed class Entity

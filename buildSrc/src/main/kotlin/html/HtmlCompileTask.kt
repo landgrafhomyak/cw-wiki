@@ -1,10 +1,10 @@
-package io.github.landgrafhomyak.chatwars.wiki.html_compiler
+package io.github.landgrafhomyak.chatwars.wiki.preprocessors.html
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
-abstract class GradleTask : DefaultTask() {
+abstract class HtmlCompileTask : DefaultTask() {
     private lateinit var destDir: File
     private val requests = ArrayList<Request>()
 
@@ -14,7 +14,7 @@ abstract class GradleTask : DefaultTask() {
         this.destDir = file
     }
 
-    fun jsp(pkg: String, name: String, file: File) {
+    fun html(pkg: String, name: String, file: File) {
         this.requests.add(Request(pkg, name, file))
     }
 

@@ -1,0 +1,1 @@
+SELECT * FROM users INNER JOIN sessions ON users.id = sessions.user WHERE sessions.key = ?

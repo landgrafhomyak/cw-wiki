@@ -1,4 +1,4 @@
-package io.github.landgrafhomyak.chatwars.wiki.html_compiler
+package io.github.landgrafhomyak.chatwars.wiki.preprocessors.html
 
 sealed class HtmlCompilationError(final override val message: String, cause: Throwable? = null) : RuntimeException(message, cause)
 
