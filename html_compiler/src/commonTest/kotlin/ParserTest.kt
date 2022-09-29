@@ -20,7 +20,7 @@ internal class ParserTest {
         class EntitiesConsumer : TestBuilder {
             override fun plain(html: () -> String): TestBuilder {
                 val str = html()
-                if (injectionStartPattern.find(str) != null)
+                if (Parser.injectionStartPattern.find(str) != null)
                     throw IllegalArgumentException("Injection start sequence <% in plain text")
                 expectedEntities.add(Entity.Plain(source.length.toUInt(), str.length.toUInt()))
                 source.append(str)
@@ -29,7 +29,7 @@ internal class ParserTest {
 
             override fun inline(kt: () -> String): TestBuilder {
                 val str = kt()
-                if (injectionEndPattern.find(str) != null)
+                if (Parser.injectionEndPattern.find(str) != null)
                     throw IllegalArgumentException("Injection closing sequence %> in injection")
                 source.append("<%=")
                 expectedEntities.add(Entity.KotlinInlineInjection(source.length.toUInt(), str.length.toUInt()))
@@ -40,7 +40,7 @@ internal class ParserTest {
 
             override fun block(kt: () -> String): TestBuilder {
                 val str = kt()
-                if (injectionEndPattern.find(str) != null)
+                if (Parser.injectionEndPattern.find(str) != null)
                     throw IllegalArgumentException("Injection closing sequence %> in injection")
                 source.append("<%")
                 expectedEntities.add(Entity.KotlinBlockInjection(source.length.toUInt(), str.length.toUInt()))
@@ -51,11 +51,11 @@ internal class ParserTest {
 
             override fun property(def: () -> Pair<String, String>): TestBuilder {
                 val (name, type) = def()
-                if (injectionEndPattern.find(name) != null)
+                if (Parser.injectionEndPattern.find(name) != null)
                     throw IllegalArgumentException("Injection closing sequence %> in property name")
                 if (name.find { c -> c == ':' } != null)
                     throw IllegalArgumentException("Injection closing sequence %> in property name")
-                if (injectionEndPattern.find(type) != null)
+                if (Parser.injectionEndPattern.find(type) != null)
                     throw IllegalArgumentException("Type separator in property name")
                 expectedProperties.add(Property(name.trim(), type.trim()))
                 source.append("<%@")
@@ -67,7 +67,7 @@ internal class ParserTest {
             }
         }
         test(EntitiesConsumer())
-        val (actualProperties, actualEntities) = parse(source)
+        val (actualProperties, actualEntities) = Parser.parse(source)
         assertContentEquals(expectedProperties, actualProperties)
         assertContentEquals(expectedEntities, actualEntities)
     }
@@ -102,7 +102,7 @@ internal class ParserTest {
 
     @Test
     fun testUnclosedInjection() {
-        assertFailsWith(UnclosedInjection::class) { parse("<% 123413241234123412") }
+        assertFailsWith(UnclosedInjection::class) { Parser.parse("<% 123413241234123412") }
     }
 
     @Test
