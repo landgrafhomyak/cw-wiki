@@ -7,16 +7,18 @@ import kotlin.jvm.JvmStatic
 
 
 object Parser {
-    internal val injectionStartPattern = Regex("<%([=@]?)")
+    internal val injectionStartPattern = Regex("<%([=@!]?)")
     internal val injectionEndPattern = Regex("%>")
     // ^^^ accessed in tests
 
     @Suppress("ReplaceRangeStartEndInclusiveWithFirstLast")
     @JvmStatic
-    fun parse(source: CharSequence): Pair<List<Property>, List<Entity>> {
+    fun parse(source: String): Page {
         var pos = 0
         val properties = ArrayList<Property>()
         val entities = ArrayList<Entity>()
+        val imports = ArrayList<Import>()
+
         while (pos < source.length) {
             val startMatch = injectionStartPattern.find(source, pos) ?: break
             if (startMatch.range.start > pos)
@@ -47,7 +49,19 @@ object Parser {
                         }
                     @Suppress("RemoveRedundantQualifierName")
                     Parser.checkName(name)
-                    properties.add(Property(name, type))
+                    properties.add(Property(name, Type.parse(type)))
+                }
+                "!" -> {
+                    if (properties.isNotEmpty()) throw ImportNotOnTop()
+                    for (e in entities) {
+                        if (e !is Entity.Plain || e.extract(source).isNotBlank())
+                            throw ImportNotOnTop()
+                    }
+                    val t = Type.parse(source.slice(injectionStart until injectionEnd))
+                    if (t.generics.isNotEmpty()) throw InvalidImport("Generics in imports not allowed")
+                    if (t.nullable) throw InvalidImport("Import can't be nullable")
+
+                    imports.add(Import(t.fullQualifiedName))
                 }
             }
             pos = endMatch.range.last + 1
@@ -55,7 +69,12 @@ object Parser {
         if (pos < source.length) {
             entities.add(Entity.Plain(pos.toUInt(), ((source.length - pos).toUInt())))
         }
-        return properties to entities
+        return Page(
+            imports = imports,
+            properties = properties,
+            source = source,
+            entities = entities
+        )
     }
 
     @JvmStatic

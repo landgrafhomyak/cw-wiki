@@ -1,7 +1,7 @@
 package io.github.landgrafhomyak.chatwars.wiki.html_compiler
 
 @Suppress("EqualsOrHashCode")
-class Property(val name: String, val type: String) {
+class Property(val name: String, val type: Type) {
     inline operator fun component1() = this.name
     inline operator fun component2() = this.type
     override fun toString(): String = "<property name=`${this.name}` type=`${this.type}`>"

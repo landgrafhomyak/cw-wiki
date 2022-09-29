@@ -9,12 +9,14 @@ internal class ParserTest {
         infix fun plain(html: () -> String): TestBuilder
         infix fun inline(kt: () -> String): TestBuilder
         infix fun block(kt: () -> String): TestBuilder
-        infix fun property(def: () -> Pair<String, String>): TestBuilder
+        infix fun property(def: () -> Pair<String, Type>): TestBuilder
+        infix fun import(def: () -> String): TestBuilder
     }
 
     private fun test(test: TestBuilder.() -> Unit) {
         val expectedProperties = ArrayList<Property>()
         val expectedEntities = ArrayList<Entity>()
+        val expectedImports = ArrayList<Import>()
         val source = StringBuilder()
 
         class EntitiesConsumer : TestBuilder {
@@ -49,27 +51,39 @@ internal class ParserTest {
                 return this
             }
 
-            override fun property(def: () -> Pair<String, String>): TestBuilder {
+            override fun property(def: () -> Pair<String, Type>): TestBuilder {
                 val (name, type) = def()
                 if (Parser.injectionEndPattern.find(name) != null)
                     throw IllegalArgumentException("Injection closing sequence %> in property name")
                 if (name.find { c -> c == ':' } != null)
-                    throw IllegalArgumentException("Injection closing sequence %> in property name")
-                if (Parser.injectionEndPattern.find(type) != null)
                     throw IllegalArgumentException("Type separator in property name")
-                expectedProperties.add(Property(name.trim(), type.trim()))
+                if (Parser.injectionEndPattern.find(type.compile()) != null)
+                    throw IllegalArgumentException("Injection closing sequence %> in property type")
+                expectedProperties.add(Property(name.trim(), type))
                 source.append("<%@")
                 source.append(name)
                 source.append(":")
-                source.append(type)
+                source.append(type.compile())
+                source.append("%>")
+                return this
+            }
+
+            override fun import(def: () -> String): TestBuilder {
+                val str = def()
+                if (Parser.injectionEndPattern.find(str) != null)
+                    throw IllegalArgumentException("Injection closing sequence %> in injection")
+                source.append("<%!")
+                expectedImports.add(Import(str))
+                source.append(str)
                 source.append("%>")
                 return this
             }
         }
         test(EntitiesConsumer())
-        val (actualProperties, actualEntities) = Parser.parse(source)
-        assertContentEquals(expectedProperties, actualProperties)
-        assertContentEquals(expectedEntities, actualEntities)
+        val actual = Parser.parse(source.toString())
+        assertContentEquals(expectedProperties, actual.properties)
+        assertContentEquals(expectedEntities, actual.entities)
+        assertContentEquals(expectedImports, actual.imports)
     }
 
 
@@ -117,30 +131,71 @@ internal class ParserTest {
 
     @Test
     fun testOneProperty() = test {
-        property { "name" to "Type" }
+        property { "name" to Type("Type") }
     }
 
     @Test
     fun testTwoProperty() = test {
-        property { "name1" to "Type" }
-        property { "name2" to "Type" }
+        property { "name1" to Type("Type") }
+        property { "name2" to Type("Type") }
     }
 
     @Test
     fun testTwoPropertiesSeparatedByNewLine() = test {
-        property { "name1" to "Type" } plain { "\n" }
-        property { "name2" to "Type" }
+        property { "name1" to Type("Type") } plain { "\n" }
+        property { "name2" to Type("Type") }
     }
 
     @Test
     fun testTwoPropertiesSeparatedByText() = testCatching<PropertyNotOnTop> {
-        property { "name1" to "Type" } plain { "aboba" }
-        property { "name2" to "Type" }
+        property { "name1" to Type("Type") } plain { "aboba" }
+        property { "name2" to Type("Type") }
     }
 
     @Test
     fun testTwoPropertiesSeparatedByEmptyInjection() = testCatching<PropertyNotOnTop> {
-        property { "name1" to "Type" } inline { "" }
-        property { "name2" to "Type" }
+        property { "name1" to Type("Type") } inline { "" }
+        property { "name2" to Type("Type") }
+    }
+
+    @Test
+    fun testOneImport() = test {
+        import { "kotlin.String" }
+    }
+
+    @Test
+    fun testTwoImports() = test {
+        import { "kotlin.Int" }
+        import { "kotlin.UInt" }
+    }
+
+    @Test
+    fun testTwoImportsSeparatedByNewLine() = test {
+        import { "kotlin.Int" } plain { "\n" }
+        import { "kotlin.UInt" }
+    }
+
+    @Test
+    fun testTwoImportsSeparatedByText() = testCatching<ImportNotOnTop> {
+        import { "kotlin.Int" } plain { "aboba" }
+        import { "kotlin.UInt" }
+    }
+
+    @Test
+    fun testTwoImportsSeparatedByEmptyInjection() = testCatching<ImportNotOnTop> {
+        import { "kotlin.Int" } inline { "" }
+        import { "kotlin.UInt" }
+    }
+
+    @Test
+    fun propertyAfterImport() = test {
+        import { "kotlin.Int" }
+        property { "num" to Type("Int") }
+    }
+
+    @Test
+    fun importAfterProperty() = testCatching<ImportNotOnTop> {
+        property { "num" to Type("Int") }
+        import { "kotlin.Int" }
     }
 }

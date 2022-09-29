@@ -59,7 +59,7 @@ class Type(val fullQualifiedName: String, val nullable: Boolean, val generics: L
             }
             if (genericsStack.isNotEmpty()) throw InvalidType("Unclosed generic")
 
-            if (_fullQualifiedName != null && generics.isNotEmpty()) throw InvalidType("Empty generic")
+            if (_fullQualifiedName != null && generics.isEmpty()) throw InvalidType("Empty generic")
 
             val fullQualifiedName = _fullQualifiedName ?: raw
 
