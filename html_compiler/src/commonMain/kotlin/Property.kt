@@ -11,4 +11,12 @@ class Property(val name: String, val type: Type) {
         if (other !is Property) return false
         return this.name == other.name && this.type == other.type
     }
+
+    inline val gravedName: String
+        get() {
+            if (this.name.startsWith("`"))
+                return this.name
+            else
+                return "`${this.name}`"
+        }
 }
