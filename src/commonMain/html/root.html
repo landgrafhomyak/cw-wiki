@@ -1,0 +1,40 @@
+<%@ title: String %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="common.css">
+</head>
+<body>
+<div class="navbar">
+    <img class="logo" src="/logo.svg">
+    <a href="/">На главную</a>
+    <a href="https://telegram.me/chtwrsbot?start=75ad693c5cea4021b2a275847887f8f2">Чат</a>
+    <a href="/login">Войти</a>
+    <a href="/random">Случайная страница</a>
+    <a href="/last_edits">Последние изменения</a>
+    <hr>
+</div>
+<div class="header">
+    <div class="account">{{{account}}}</div>
+    <div class="tabs">
+        <div class="space"></div>
+        <div class="tab selected">
+            <a href="?">Читать</a>
+        </div>
+        <div class="tab">
+            <a href="?edit">{{{edit_or_view}}}</a>
+        </div>
+        <div class="tab">
+            <a href="?history">История</a>
+        </div>
+        <div class="space-tab">
+
+        </div>
+    </div>
+</div>
+<div class="body"></div>
+<div class="footer"></div>
+</body>
+</html>

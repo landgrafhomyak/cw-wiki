@@ -1,0 +1,97 @@
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #e9f9ff;
+    font-family: sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+body > div.navbar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 160px;
+    font-size: smaller;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+body > div.navbar > img.logo {
+    display: block;
+}
+
+body > div.navbar > a {
+    margin: 8px 0;
+    display: block;
+}
+
+body > div.navbar > hr {
+    margin: 8px 20px;
+    display: block;
+    border: none;
+    border-top: 1px solid #009fd9;
+}
+
+body > div.header {
+    margin-left: 160px;
+    height: 80px;
+    box-sizing: border-box;
+    position: relative;
+    font-size: smaller;
+}
+
+body > div.header > div.account {
+    padding-top: 15px;
+    padding-right: 15px;
+    text-align: right;
+}
+
+body > div.header > div.tabs {
+    display: table;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px
+}
+
+body > div.header > div.tabs > div.space {
+    display: table-cell;
+    width: 100%;
+}
+
+body > div.header > div.tabs > div.tab {
+    display: table-cell;
+    border: 1px solid;
+    border-image: linear-gradient(to top, #009fd9, #e9f9ff) 1;
+    padding: 5px 10px;
+    background-image: linear-gradient(to top, #d7f0fc, #e9f9ff);
+}
+
+body > div.header > div.tabs > div.tab.selected {
+    border-bottom: none;
+    background-image: linear-gradient(to top, white, #e9f9ff);
+}
+
+body > div.header > div.tabs > div.tab a, body > div.header > div.tabs > div.tab a:visited {
+    color: blue;
+}
+
+body > div.body {
+    margin-left: 160px;
+    background-color: white;
+    border: 1px solid #009fd9;
+    border-right: none;
+    min-height: 100px;
+}
+
+body > div.footer {
+    margin-left: 160px;
+}
