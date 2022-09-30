@@ -10,6 +10,7 @@ object PageProcessor {
             "/"           -> resp.answer(200, Root.format {
                 title = "Main page"
                 user = User.Authorized(UserId(0u), "abc")
+                page = Page.Article.Article()
             })
             "/common.css" -> resp.answer(200, Resources.cssCommon)
         }

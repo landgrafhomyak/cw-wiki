@@ -1,6 +1,9 @@
 <%! io.github.landgrafhomyak.chatwars.wiki.User %>
+<%! io.github.landgrafhomyak.chatwars.wiki.Page %>
+<%! kotlin.reflect.KClass %>
 <%@ title: String %>
 <%@ user: User %>
+<%@ page: Page %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,27 +46,21 @@
         %>
     </div>
     <div class="tabs">
-        <div class="tab selected">
-            <a href="?">Статья</a>
-        </div>
-        <div class="tab join-left">
-            <a href="?fix">Предложить исправление</a>
-        </div>
-        <div class="space"></div>
-        <div class="tab join-right selected">
-            <a href="?">Читать</a>
-        </div>
-        <div class="tab join-right">
-            <a href="?history">История</a>
-        </div>
-        <div class="tab">
-            <%=
-                when(user) {
-                    is User.Authorized -> "<a href='?edit'>Редактировать</a>"
-                    else -> "<a href='?source'>Исходный код</a>"
+        <%=
+            when (page) {
+                is Page.Article -> {
+                    val s = StringBuilder()
+                    s.addHeaderTab<Page.Article.Article>(page, "?", "Статья", false)
+                    s.addHeaderTab<Page.Article.Fix>(page, "?fix", "Предложить исправление", true)
+                    if (user is User.Authorized) s.addHeaderTab<Page.Article.Edit>(page, "?edit", "Редактировать", true)
+                    else s.addHeaderTab<Page.Article.Source>(page, "?source", "Исходный код", true)
+                    s.addHeaderTab<Page.Article.History>(page, "?edit", "История", true)
+                    s.toString()
                 }
-            %>
-        </div>
+                is Page.User -> ""
+                is Page.Special -> ""
+            }
+        %>
         <div class="space-tab">
 
         </div>
