@@ -4,16 +4,24 @@ import kotlin.jvm.JvmStatic
 
 object PageProcessor {
     @JvmStatic
-    fun process(path: String, resp: HttpResponseBuilder) {
+    fun process(path: String, resp: HttpExchange) {
         when (path) {
-            "/"           -> resp.answer(
-                200, PageGenerator.generate(
-                    title = "Main page",
-                    user = User.Authorized(UserId(0u), "abc"),
-                    page = Page.Article.Article()
+            "/"           -> {
+                resp.responseCode(200)
+                resp.setContentType(HttpContentType.HTML)
+                resp.body(
+                    PageGenerator.generate(
+                        title = "Main page",
+                        user = User.Authorized(UserId(0u), "abc"),
+                        page = Page.Article.Article()
+                    )
                 )
-            )
-            "/common.css" -> resp.answer(200, Resources.cssCommon)
+            }
+            "/common.css" -> {
+                resp.responseCode(200)
+                resp.setContentType(HttpContentType.CSS)
+                resp.body(Resources.cssCommon)
+            }
         }
     }
 }

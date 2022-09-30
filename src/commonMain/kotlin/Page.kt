@@ -1,5 +1,6 @@
 package io.github.landgrafhomyak.chatwars.wiki
 
+@Suppress("RemoveRedundantQualifierName")
 sealed class Page {
     sealed class Article : Page() {
         class Article : Page.Article()
@@ -9,6 +10,11 @@ sealed class Page {
         class History : Page.Article()
     }
 
-    sealed class User : Page()
+    sealed class User : Page() {
+        class Profile : User()
+        class Contribution : User()
+    }
+
     sealed class Special : Page()
+    sealed class ServerError : Page()
 }
