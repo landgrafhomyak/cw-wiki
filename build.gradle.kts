@@ -12,14 +12,14 @@ version = "0"
 repositories {
     mavenCentral()
 }
-
-val htmlKotlinDir = buildDir.resolve("generated").resolve("html")
-val htmlCompile = tasks.create<HtmlCompile>("htmlCompile") {
-    destDir(htmlKotlinDir)
-    val sourceRoot = rootDir.resolve("src").resolve("commonMain").resolve("html")
-    val pkg = "io.github.landgrafhomyak.chatwars.wiki.templates"
-    html(pkg, "Root", sourceRoot.resolve("root.html"))
-}
+//
+//val htmlKotlinDir = buildDir.resolve("generated").resolve("html")
+//val htmlCompile = tasks.create<HtmlCompile>("htmlCompile") {
+//    destDir(htmlKotlinDir)
+//    val sourceRoot = rootDir.resolve("src").resolve("commonMain").resolve("html")
+//    val pkg = "io.github.landgrafhomyak.chatwars.wiki.templates"
+//    html(pkg, "Root", sourceRoot.resolve("root.html"))
+//}
 
 val sqlKotlinDir = buildDir.resolve("generated").resolve("sql")
 val sqlCompile = tasks.create<ResourceCompile>("sqlCompile") {
@@ -41,7 +41,7 @@ val resCompile = tasks.create<ResourceCompile>("resCompile") {
 }
 
 tasks.withType<KotlinCompile>().all {
-    dependsOn(htmlCompile, sqlCompile, resCompile)
+    dependsOn(/*htmlCompile,*/ sqlCompile, resCompile)
 }
 
 kotlin {
@@ -67,7 +67,7 @@ kotlin {
                 implementation(kotlin("stdlib"))
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.0")
             }
-            this.kotlin.srcDir(htmlKotlinDir)
+//            this.kotlin.srcDir(htmlKotlinDir)
             this.kotlin.srcDir(sqlKotlinDir)
             this.kotlin.srcDir(resKotlinDir)
         }
