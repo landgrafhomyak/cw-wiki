@@ -1,7 +1,7 @@
 body {
     padding: 0;
     margin: 0;
-    background-color: #e9f9ff;
+    background-color: #f0ffff;
     font-family: sans-serif;
 }
 
@@ -28,14 +28,12 @@ body > div.navbar > img.logo {
     display: block;
 }
 
-body > div.navbar > a {
+body > div.navbar > * {
     margin: 8px 0;
     display: block;
 }
 
 body > div.navbar > hr {
-    margin: 8px 20px;
-    display: block;
     border: none;
     border-top: 1px solid #009fd9;
 }
@@ -49,9 +47,20 @@ body > div.header {
 }
 
 body > div.header > div.account {
-    padding-top: 15px;
-    padding-right: 15px;
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-left: auto;
     text-align: right;
+    display: table;
+}
+
+body > div.header > div.account > * {
+    display: table-cell;
+    padding-left: 15px;
+}
+
+body > div.header > div.account > div.sep {
+    border-right: 1px solid #009fd9;
 }
 
 body > div.header > div.tabs {
@@ -70,15 +79,15 @@ body > div.header > div.tabs > div.space {
 body > div.header > div.tabs > div.tab {
     display: table-cell;
     border: 1px solid;
-    border-image: linear-gradient(to top, #009fd9, #e9f9ff) 1;
+    border-image: linear-gradient(to top, #009fd9, #f0ffff) 1;
     padding: 5px 10px;
-    background-image: linear-gradient(to top, #d7f0fc, #e9f9ff);
+    background-image: linear-gradient(to top, #d7f0fc, #f0ffff);
     white-space: nowrap;
 }
 
 body > div.header > div.tabs > div.tab.selected {
     border-bottom: none;
-    background-image: linear-gradient(to top, white, #e9f9ff);
+    background-image: linear-gradient(to top, white, #f0ffff);
 }
 
 body > div.header > div.tabs > div.tab.join-left {
