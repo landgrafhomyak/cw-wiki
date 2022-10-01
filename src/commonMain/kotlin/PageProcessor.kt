@@ -1,26 +1,26 @@
 package io.github.landgrafhomyak.chatwars.wiki
 
-import kotlin.jvm.JvmStatic
 
-object PageProcessor {
-    @JvmStatic
-    fun process(path: String, resp: HttpExchange) {
+class PageProcessor(private val database: Database) {
+    fun process(path: String, exchange: HttpExchange) {
+        val cookies = Cookies(exchange.getInputHeader("Cookie"))
+        val user = this.database.getUserBySession(cookies.sessionId)
         when (path) {
             "/"           -> {
-                resp.responseCode(200)
-                resp.setContentType(HttpContentType.HTML)
-                resp.body(
+                exchange.responseCode(200)
+                exchange.setContentType(HttpContentType.HTML)
+                exchange.body(
                     PageGenerator.generate(
                         title = "Main page",
-                        user = User.Authorized(UserId(0u), "abc"),
+                        user = user,
                         page = Page.Article.Article()
                     )
                 )
             }
             "/common.css" -> {
-                resp.responseCode(200)
-                resp.setContentType(HttpContentType.CSS)
-                resp.body(Resources.cssCommon)
+                exchange.responseCode(200)
+                exchange.setContentType(HttpContentType.CSS)
+                exchange.body(Resources.cssCommon)
             }
         }
     }

@@ -41,7 +41,6 @@ object PageGenerator {
     <div class="account">
         ${
             when (user) {
-                is User.Anonymous      -> "<a href='/login'>Войти</a>"
                 is User.SessionExpired -> """
                         <b style="color: darkred">Ваша сессия истекла!</b>
                         <a href="#">Ок</a>
@@ -57,6 +56,8 @@ object PageGenerator {
                         <a href='/user/${user.name}?contribution'>Вклад</a>
                         <a href='/logout'>Выйти</a>
                     """
+                else                   -> "<a href='/login'>Войти</a>"
+
             }
         }
     </div>

@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS pages
 (
     id        INTEGER NOT NULL UNIQUE PRIMARY KEY AUTOINCREMENT,
-    name      TEXT    NOT NULL UNIQUE,
+    name      TEXT UNIQUE,
     content   BLOB    NOT NULL,
     protected INTEGER NOT NULL DEFAULT false
 );

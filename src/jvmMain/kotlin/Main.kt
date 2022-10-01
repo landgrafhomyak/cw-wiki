@@ -6,10 +6,10 @@ import java.net.InetSocketAddress
 object Main {
     @JvmStatic
     fun main(vararg args: String) {
-        val s = HttpServer.create(InetSocketAddress(8089), 0)
-        s.createContext("/", HttpHandler)
-        s.executor = null;
-        s.start()
-//        SQLiteDatabase(JDBC.createConnection(JDBC.PREFIX + "test1.sqlite", Properties()) as SQLiteConnection)
+        val database = SQLiteJDBCDatabase("test.sqlite")
+        val server = HttpServer.create(InetSocketAddress(8089), 0)
+        server.createContext("/", HttpHandler(database))
+        server.executor = null;
+        server.start()
     }
 }
