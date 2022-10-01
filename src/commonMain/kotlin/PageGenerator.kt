@@ -4,6 +4,7 @@ import kotlin.jvm.JvmStatic
 
 object PageGenerator {
     @Suppress("NOTHING_TO_INLINE")
+    @JvmStatic
     private inline fun <reified T : Page> StringBuilder.addHeaderTab(page: Page, url: String, title: String, joinLeft: Boolean) {
         this.append(
             """<div class='tab${
@@ -70,9 +71,17 @@ object PageGenerator {
                     val s = StringBuilder()
                     s.addHeaderTab<Page.Article.Article>(page, ".", "Статья", false)
                     s.addHeaderTab<Page.Article.Fix>(page, "?fix", "Предложить исправление", true)
-                    if (user is User.Authorized) s.addHeaderTab<Page.Article.Edit>(page, "?edit", "Редактировать", true)
-                    else s.addHeaderTab<Page.Article.Source>(page, "?source", "Исходный код", true)
-                    s.addHeaderTab<Page.Article.History>(page, "?edit", "История", true)
+                    if (user is User.Authorized) {
+                        if (page is Page.Article.Source) 
+                            s.addHeaderTab<Page.Article.Source>(page, "?source", "Исходный код", true)
+                        else 
+                            s.addHeaderTab<Page.Article.Edit>(page, "?edit", "Редактировать", true)
+                    }
+                    else
+                    {
+                        s.addHeaderTab<Page.Article.Source>(page, "?source", "Исходный код", true)
+                    }
+                    s.addHeaderTab<Page.Article.History>(page, "?history", "История", true)
                     s.toString()
                 }
                 is Page.User    -> {

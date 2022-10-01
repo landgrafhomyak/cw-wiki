@@ -7,6 +7,11 @@ import java.time.Instant
 class SQLiteJDBCDatabase(
     private val _connection: SQLiteConnection
 ) : Database {
+    private inline fun <T : AutoCloseable, R> use(resource: T, block: (T) -> R): R =
+        resource.use(block)
+
+    constructor(path: String) : this(SQLiteConnection(JDBC.PREFIX + path, path))
+
     init {
         use(this._connection.createStatement()) { stmt ->
             for (raw in SQLiteRequests.createTables)
@@ -15,7 +20,6 @@ class SQLiteJDBCDatabase(
         }
     }
 
-    constructor(path: String) : this(SQLiteConnection(JDBC.PREFIX + path, path))
 
     override fun getUserBySession(session: String): User {
         use(this._connection.prepareStatement(SQLiteRequests.getUserBySession)) { stmt ->

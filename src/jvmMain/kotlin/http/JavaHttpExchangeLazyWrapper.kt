@@ -1,8 +1,6 @@
-package io.github.landgrafhomyak.chatwars.wiki
+package io.github.landgrafhomyak.chatwars.wiki.http
 
-import com.sun.net.httpserver.HttpExchange as JavaHttpExchange
-
-class JavaHttpExchangeLazyWrapper(private val _native: JavaHttpExchange) : HttpExchange {
+class JavaHttpExchangeLazyWrapper(private val _native: com.sun.net.httpserver.HttpExchange) : HttpExchange {
     var responseCode: Int? = null
         private set
 

@@ -1,4 +1,4 @@
-package io.github.landgrafhomyak.chatwars.wiki
+package io.github.landgrafhomyak.chatwars.wiki.http
 
 class Cookies {
     val sessionId: String?
