@@ -28,7 +28,9 @@ object PageGenerator {
 </head>
 <body>
 <div class="navbar">
-    <img class="logo" src="/logo.svg">
+    <a href='/'>
+        <img class="logo" src="/logo.svg">
+    </a>
     <a href="/">На главную</a>
     <a href="https://telegram.me/chtwrsbot?start=75ad693c5cea4021b2a275847887f8f2">Чат</a>
     <a href="/random">Случайная страница</a>

@@ -20,7 +20,12 @@ class PageProcessor(private val database: Database) {
             "/common.css" -> {
                 exchange.responseCode(200)
                 exchange.setContentType(HttpContentType.CSS)
-                exchange.body(Resources.cssCommon)
+                exchange.body(WebStaticResources.cssCommon)
+            }
+            "/logo.svg" -> {
+                exchange.responseCode(200)
+                exchange.setContentType(HttpContentType.SVG)
+                exchange.body(WebStaticResources.logo)
             }
         }
     }

@@ -35,9 +35,10 @@ val resKotlinDir = buildDir.resolve("generated").resolve("res")
 val resCompile = tasks.create<ResourceCompile>("resCompile") {
     destDir(resKotlinDir)
     pkg("io.github.landgrafhomyak.chatwars.wiki")
-    name("Resources")
+    name("WebStaticResourcesImpl")
     val sourceRoot = rootDir.resolve("src").resolve("commonMain").resolve("resources")
-    text("cssCommon", sourceRoot.resolve("common.css"))
+    binary("cssCommon", sourceRoot.resolve("common.css"))
+    binary("logo", sourceRoot.resolve("logo").resolve("cw3-default.svg"))
 }
 
 tasks.withType<KotlinCompile>().all {
@@ -69,7 +70,6 @@ kotlin {
             }
 //            this.kotlin.srcDir(htmlKotlinDir)
             this.kotlin.srcDir(sqlKotlinDir)
-            this.kotlin.srcDir(resKotlinDir)
         }
         val commonTest by getting {
             dependencies {
@@ -77,14 +77,27 @@ kotlin {
             }
         }
         val jvmMain by getting {
+            dependsOn(commonMain)
             dependencies {
                 implementation("org.xerial:sqlite-jdbc:3.8.11.2")
             }
         }
-//        val jvmTest by getting
+        val jvmTest by getting {
+            dependsOn(commonTest)
+        }
+
+        val embedWebResources by creating {
+            dependsOn(commonMain)
+            this.kotlin.srcDir(resKotlinDir)
+        }
+
 //        val jsMain by getting
 //        val jsTest by getting
-//        val nativeMain by getting
-//        val nativeTest by getting
+        val nativeMain by getting {
+            dependsOn(embedWebResources)
+        }
+        val nativeTest by getting {
+            dependsOn(commonTest)
+        }
     }
 }

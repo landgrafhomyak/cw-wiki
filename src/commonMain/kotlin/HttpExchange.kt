@@ -12,6 +12,7 @@ interface HttpExchange {
 enum class HttpContentType(val value: String) {
     HTML("text/html"),
     CSS("text/css"),
+    SVG("image/svg+xml"),
 }
 
 inline fun HttpExchange.setContentType(type: HttpContentType, charset: String = "utf-8") =

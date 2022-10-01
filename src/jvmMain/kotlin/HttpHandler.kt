@@ -9,9 +9,9 @@ class HttpHandler(database: Database) : HttpHandler {
         exchange ?: return
         val wrapper = JavaHttpExchangeLazyWrapper(exchange)
         this.proc.process(exchange.requestURI.path, wrapper)
-        exchange.sendResponseHeaders(wrapper.responseCode!!, wrapper.body!!.size.toLong())
         for ((name, value) in wrapper.outputHeaders)
             exchange.responseHeaders.add(name, value)
+        exchange.sendResponseHeaders(wrapper.responseCode!!, wrapper.body!!.size.toLong())
         exchange.responseBody.write(wrapper.body!!)
         exchange.responseBody.close()
     }
